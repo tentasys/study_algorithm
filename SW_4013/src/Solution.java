@@ -30,49 +30,85 @@ public class Solution {
 				int r = Integer.parseInt(st.nextToken());
 			
 				boolean flag[] = new boolean[4];
+				int wise[] = new int[4];
 				
 				switch(n)
 				{
 				case 1:
-					flag[0] = true;
-					if(arr[0][2] != arr[1][6])	flag[1] = true;
+					flag[0] = true;		wise[0] = 1;
+					if(arr[0][2] != arr[1][6])
+					{
+						flag[1] = true;	wise[1] = -1;
+					}
 					else	break;
-					if(arr[1][2] != arr[2][6])	flag[2] = true;
+					if(arr[1][2] != arr[2][6])
+					{
+						flag[2] = true;	wise[2] = 1;
+					}
 					else	break;
-					if(arr[2][2] != arr[3][6])	flag[3] = true;
+					if(arr[2][2] != arr[3][6])
+					{
+						flag[3] = true;	wise[3] = -1;
+					}
 					break;
 				case 2:
-					flag[1] = true;
-					if(arr[0][2] != arr[1][6])	flag[0] = true;
-					if(arr[1][2] != arr[2][6])	flag[2] = true;
+					flag[1] = true;		wise[1] = 1;
+					if(arr[0][2] != arr[1][6])
+					{
+						flag[0] = true;	wise[1] = -1;
+					}
+					if(arr[1][2] != arr[2][6])
+					{
+						flag[2] = true;	wise[2] = -1;
+					}
 					else	break;
-					if(arr[2][2] != arr[3][6])	flag[3] = true;
+					if(arr[2][2] != arr[3][6])
+					{
+						flag[3] = true;	wise[3] = 1;
+					}
 					break;
 				case 3:
-					flag[2] = true;
-					if(arr[3][6] != arr[2][2])	flag[3]	= true;
-					if(arr[2][6] != arr[1][2])	flag[1] = true;
+					flag[2] = true;		wise[2] = 1;
+					if(arr[3][6] != arr[2][2])
+					{
+						flag[3]	= true;	wise[3] = -1;
+					}
+					if(arr[2][6] != arr[1][2])
+					{
+						flag[1] = true;	wise[1] = -1;
+					}
 					else	break;
-					if(arr[1][6] != arr[0][2])	flag[0] = true;
+					if(arr[1][6] != arr[0][2])
+					{
+						flag[0] = true;	wise[0] = 1;
+					}
 					break;
 				case 4:
-					flag[3] = true;
-					if(arr[3][6] != arr[2][2])	flag[2] = true;
+					flag[3] = true;		wise[3] = 1;
+					if(arr[3][6] != arr[2][2])
+					{
+						flag[2] = true;	wise[2] = -1;
+					}
 					else	break;
-					if(arr[2][6] != arr[1][2])	flag[1] = true;
+					if(arr[2][6] != arr[1][2])
+					{
+						flag[1] = true;	wise[1] = 1;
+					}
 					else	break;
-					if(arr[1][6] != arr[0][2])	flag[0] = true;
+					if(arr[1][6] != arr[0][2])
+					{
+						flag[0] = true;	wise[0] = -1;
+					}
 					break;
 				}
 				
 				for(int j=0; j<4; j++)
 				{
-					if((flag[j] == true) && j==n-1)
-						rotate(r, arr[j]);
-					else if((flag[j] == true) && j!=n-1)
-						rotate(r*-1, arr[j]);
+					if(flag[j] == true)
+						rotate(r*wise[j], arr[j]);
 				}
-//				
+				
+//				System.out.println();
 //				for(int a=0; a<4; a++)
 //				{
 //					for(int b=0; b<8; b++)
@@ -101,7 +137,7 @@ public class Solution {
 	static void clockwise(int arr[])
 	{
 		int temp = arr[arr.length-1];
-		for(int i=arr.length-1; i>1; i--)
+		for(int i=arr.length-1; i>0; i--)
 			arr[i] = arr[i-1];
 		arr[0] = temp;
 	}
