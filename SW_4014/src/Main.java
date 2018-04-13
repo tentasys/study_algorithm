@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -17,6 +18,7 @@ public class Main {
 			int n = Integer.parseInt(st.nextToken());
 			int x = Integer.parseInt(st.nextToken());
 			int matrix[][] = new int[n][n];
+			boolean visit [][] = new boolean[n][n];
 			int count = 0;
 			boolean flag;
 			
@@ -46,14 +48,17 @@ public class Main {
 							flag = false;
 							break;
 						}
-						int sum = 0;
+						int num = matrix[w-1][h];
 						for(int k=w-1; k>w-x-1; k--)
-							sum += matrix[k][h];
-						if(sum/x != matrix[w-1][h])
 						{
-							flag = false;
-							break;
+							if((num != matrix[k][h]) || (visit[k][h] == true))
+							{
+								flag = false;
+								break;
+							}
+							visit[k][h] = true;
 						}
+							
 					}
 					else if(matrix[w-1][h]-matrix[w][h] == 1)
 					{
@@ -62,20 +67,24 @@ public class Main {
 							flag = false;
 							break;
 						}
-						int sum = 0;
+						int num = matrix[w][h];
 						for(int k=w; k<w+x; k++)
-							sum += matrix[k][h];
-							
-						if(sum/x != matrix[w][h])
 						{
-							flag = false;
-							break;
-						}
+							if((num != matrix[k][h]) || (visit[k][h] == true))
+							{
+								flag = false;
+								break;
+							}
+							visit[k][h] = true;
+						}		
 					}
 				}
 				if(flag == true)
 					count++;
 			}
+			
+			for(int i=0; i<n; i++)
+				Arrays.fill(visit[i], false);
 			
 			//horizontal
 			for(int w=0; w<n; w++)
@@ -96,15 +105,17 @@ public class Main {
 							flag = false;
 							break;
 						}
-						int num = matrix[w][h];
+						int num = matrix[w][h-1];
 						for(int k=h-1; k>h-x-1; k--)
 						{
-							if(num != matrix[w][k])
+							if((num != matrix[w][k]) || (visit[w][k] == true))
 							{
 								flag = false;
 								break;
 							}
+							visit[w][k] = true;
 						}
+							
 					}
 					else if(matrix[w][h-1]-matrix[w][h] == 1)
 					{
@@ -113,15 +124,17 @@ public class Main {
 							flag = false;
 							break;
 						}
-						int sum = 0;
+						int num = matrix[w][h];
 						for(int k=h; k<h+x; k++)
-							sum += matrix[w][k];
-							
-						if(sum/x != matrix[w][h])
 						{
-							flag = false;
-							break;
+							if((num != matrix[w][k]) || (visit[w][k] == true))
+							{
+								flag = false;
+								break;
+							}
+							visit[w][k] = true;
 						}
+							
 					}
 				}
 				if(flag == true)
