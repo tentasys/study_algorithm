@@ -96,13 +96,14 @@ public class Main {
 							flag = false;
 							break;
 						}
-						int sum = 0;
+						int num = matrix[w][h];
 						for(int k=h-1; k>h-x-1; k--)
-							sum += matrix[w][k];
-						if(sum/x != matrix[w][h-1])
 						{
-							flag = false;
-							break;
+							if(num != matrix[w][k])
+							{
+								flag = false;
+								break;
+							}
 						}
 					}
 					else if(matrix[w][h-1]-matrix[w][h] == 1)
