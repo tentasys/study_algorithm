@@ -55,7 +55,7 @@ public class Solution {
 					flag[1] = true;		wise[1] = 1;
 					if(arr[0][2] != arr[1][6])
 					{
-						flag[0] = true;	wise[1] = -1;
+						flag[0] = true;	wise[0] = -1;
 					}
 					if(arr[1][2] != arr[2][6])
 					{
@@ -107,21 +107,9 @@ public class Solution {
 					if(flag[j] == true)
 						rotate(r*wise[j], arr[j]);
 				}
-				
-//				System.out.println();
-//				for(int a=0; a<4; a++)
-//				{
-//					for(int b=0; b<8; b++)
-//						System.out.print(arr[a][b]);
-//					System.out.println();
-//				}
 			}
 			
 			int sum = arr[0][0]*1 + arr[1][0]*2 + arr[2][0]*4 + arr[3][0]*8;
-//			System.out.println(arr[0][0]);
-//			System.out.println(arr[1][0]);
-//			System.out.println(arr[2][0]);
-//			System.out.println(arr[3][0]);
 			System.out.println("#" + (ii+1) + " " + sum);
 		}
 	}
