@@ -1,20 +1,17 @@
 package test;
 
 import java.util.PriorityQueue;
+import java.util.stream.IntStream;
 
 public class Main {
 
 	public static void main(String[] args) {
-		PriorityQueue<Integer> q = new PriorityQueue<Integer>();
-		q.offer(3);
-		q.offer(1);
-		q.offer(4);
-		q.offer(2);
-		
-		System.out.println(q.poll());
-		System.out.println(q.poll());
-		System.out.println(q.poll());
-		System.out.println(q.poll());
+		int[][] table = { {1,2,3,4,5,6,7,8,9,10},
+                {2,3,4,5,6,7,8,9,10,1},
+                {3,4,5,6,7,8,9,10,1,2},
+                {4,5,6,7,8,9,10,1,2,3},
+                {5,6,7,8,9,10,1,2,3,4} };
+		System.out.println(table[0].toString());
 	}
 
 }
