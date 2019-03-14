@@ -20,26 +20,13 @@ public class Main {
 				arr[i][j] = Integer.parseInt(st.nextToken());
 		}
 		
-		//각 정점마다 완전탐색
+		//중간경로 업데이트
 		for(int i=0; i<N; i++)
 		{
-			int visit[] = new int[N];
-			Queue<Integer> q = new LinkedList<Integer>();
-			
-			//초기 진입을 위해 큐에 제공
 			for(int j=0; j<N; j++)
-				if(arr[i][j] == 1)	q.offer(j);
-			
-			//큐 돌면서 BFS 수행
-			while(!q.isEmpty())
 			{
-				int temp = q.poll();
-				visit[temp] = 1;		//방문 체크
-				arr[i][temp] = 1;		//길이 있다고 체크
-				
-				for(int j=0; j<N; j++)
-					if((arr[temp][j] == 1) && (visit[j] == 0))	q.offer(j);
-				
+				for(int k=0; k<N; k++)
+					if(arr[j][i] == 1 && arr[i][k] == 1)	arr[j][k] = 1;
 			}
 		}
 		
@@ -53,5 +40,4 @@ public class Main {
 		
 		br.close();
 	}
-
 }
