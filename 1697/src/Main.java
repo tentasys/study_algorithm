@@ -31,6 +31,7 @@ public class Main {
 		
 		if(n == k)	return 0;
 		
+		//BFS
 		while(!q.isEmpty())
 		{
 			a = q.poll();
