@@ -14,9 +14,7 @@ public class Main {
 		arr[1] = 0;
 		
 		for(int i=3; i<42; i++)
-		{
 			arr[i] = arr[i-1] + arr[i-2];
-		}
 		
 		for(int i=0; i<T; i++)
 		{
