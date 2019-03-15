@@ -1,5 +1,3 @@
-//https://www.acmicpc.net/problem/2667
-
 import java.io.*;
 import java.util.PriorityQueue;
 
