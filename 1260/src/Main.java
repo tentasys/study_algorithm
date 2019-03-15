@@ -15,7 +15,7 @@ public class Main {
 		
 		//초기 환경 설정
 		for(int i=0; i<3; i++)
-			arr[i] = Integer.parseInt(st.nextToken());
+			arr[i] = Integer.parseInt(st.nextToken()); 
 		
 		//arr[0] : 정점의 개수, arr[1] : 간선의 개수, arr[2] : 탐색을 시작할 정점 번호
 		
