@@ -27,7 +27,7 @@ public class Main {
 			System.out.println();
 			return;
 		}
-		for(int i=n+1; i<=N; i++)
+		for(int i=n+1; i<=N; i++)	//순열과 다른 부분
 		{
 			if(visit[i] == 0)
 			{
