@@ -13,7 +13,7 @@ public class Main {
 			int a = Integer.parseInt(br.readLine().trim());
 			arr[i] = (int)Math.sqrt(a);
 		}
-		
+		//
 		for(int i=0; i<n; i++)
 			System.out.println(arr[i]);
 	}
