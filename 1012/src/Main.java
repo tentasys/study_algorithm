@@ -15,7 +15,7 @@ public class Main {
 		{
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			
-			//initialize
+			//initialize 
 			int w = Integer.parseInt(st.nextToken());
 			int h = Integer.parseInt(st.nextToken());
 			int k = Integer.parseInt(st.nextToken());
