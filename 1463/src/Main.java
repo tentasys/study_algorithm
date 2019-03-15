@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-
+	//
 	static int MIN = Integer.MAX_VALUE;
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
