@@ -23,8 +23,8 @@ public class Main {
 			B[i] = Integer.parseInt(st.nextToken());
 		
 		//두 배열 정렬
-		Desc(A, 0, N-1);	//내림차순
-		Asc(B, 0, N-1);	//오름차순
+		QuickSortDesc(A, 0, N-1);	//내림차순
+		QuickSortAsc(B, 0, N-1);	//오름차순
 		
 		//곱의 합 구하기
 		int S = 0;
@@ -35,6 +35,9 @@ public class Main {
 		//System.out.print(S);
 		
 		for(int a: A)
+			System.out.print(a+" ");
+		System.out.println();
+		for(int a: B)
 			System.out.print(a+" ");
 	}	
 
@@ -56,16 +59,54 @@ public class Main {
 		}
 	}
 	
-	static int Asc(int[] arr, int pivot, int last){
+	static int Asc(int[] arr, int p, int last){
 		
-		for(int i=pivot; i<last; i++)
+		int temp = arr[p];
+		int pivot = p;
+		
+		for(int j=p+1; j<=last; j++)
 		{
-			
+			if(arr[j] <= temp)
+			{
+				pivot++;
+				
+				//swap
+				arr[j] = arr[j]+arr[pivot];
+				arr[pivot] = arr[j]-arr[pivot];
+				arr[j] = arr[j]-arr[pivot];
+			}
 		}
+		
+		temp = arr[p];
+		arr[p] = arr[pivot];
+		arr[pivot] = temp;
+		
+		return pivot;
 		
 	}
 	
-	static int Desc(int[] arr, int pivot, int last) {
+	static int Desc(int[] arr, int p, int last) {
 		
+		int temp = arr[p];
+		int pivot = p;
+		
+		for(int j=p+1; j<=last; j++)
+		{
+			if(arr[j] >= temp)
+			{
+				pivot++;
+				
+				//swap
+				arr[j] = arr[j]+arr[pivot];
+				arr[pivot] = arr[j]-arr[pivot];
+				arr[j] = arr[j]-arr[pivot];
+			}
+		}
+		
+		temp = arr[p];
+		arr[p] = arr[pivot];
+		arr[pivot] = temp;
+		
+		return pivot;
 	}
 }

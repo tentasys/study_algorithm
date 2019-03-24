@@ -1,17 +1,19 @@
 package test;
 
-import java.util.PriorityQueue;
-import java.util.stream.IntStream;
 
 public class Main {
 
 	public static void main(String[] args) {
-		int[][] table = { {1,2,3,4,5,6,7,8,9,10},
-                {2,3,4,5,6,7,8,9,10,1},
-                {3,4,5,6,7,8,9,10,1,2},
-                {4,5,6,7,8,9,10,1,2,3},
-                {5,6,7,8,9,10,1,2,3,4} };
-		System.out.println(table[0].toString());
+		int a = 1;
+		int b = 2;
+		
+		System.out.println("Before : " + a + " " + b);
+		
+		a = a+b;
+		b = a-b;
+		a = a-b;
+		
+		System.out.println("After : " + a + " " + b);
 	}
 
 }
