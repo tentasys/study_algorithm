@@ -23,22 +23,17 @@ public class Main {
 			B[i] = Integer.parseInt(st.nextToken());
 		
 		//두 배열 정렬
-		QuickSortDesc(A, 0, N-1);	//내림차순
-		QuickSortAsc(B, 0, N-1);	//오름차순
+		QuickSortAsc(A, 0, N-1);	//내림차순
+		QuickSortDesc(B, 0, N-1);	//오름차순
 		
 		//곱의 합 구하기
 		int S = 0;
 		
 		for(int i=0; i<N; i++)
-			S = A[i]*B[i];
+			S += A[i]*B[i];
 		
-		//System.out.print(S);
+		System.out.print(S);
 		
-		for(int a: A)
-			System.out.print(a+" ");
-		System.out.println();
-		for(int a: B)
-			System.out.print(a+" ");
 	}	
 
 	static void QuickSortAsc(int[] arr, int pivot, int last) {
@@ -63,17 +58,18 @@ public class Main {
 		
 		int temp = arr[p];
 		int pivot = p;
+		int swap;
 		
 		for(int j=p+1; j<=last; j++)
 		{
-			if(arr[j] <= temp)
+			if(arr[j] < temp)
 			{
 				pivot++;
 				
 				//swap
-				arr[j] = arr[j]+arr[pivot];
-				arr[pivot] = arr[j]-arr[pivot];
-				arr[j] = arr[j]-arr[pivot];
+				swap = arr[pivot];
+				arr[pivot] = arr[j];
+				arr[j] = swap;
 			}
 		}
 		
@@ -89,17 +85,18 @@ public class Main {
 		
 		int temp = arr[p];
 		int pivot = p;
+		int swap;
 		
 		for(int j=p+1; j<=last; j++)
 		{
-			if(arr[j] >= temp)
+			if(arr[j] > temp)
 			{
 				pivot++;
 				
 				//swap
-				arr[j] = arr[j]+arr[pivot];
-				arr[pivot] = arr[j]-arr[pivot];
-				arr[j] = arr[j]-arr[pivot];
+				swap = arr[pivot];
+				arr[pivot] = arr[j];
+				arr[j] = swap;
 			}
 		}
 		
