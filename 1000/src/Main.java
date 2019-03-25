@@ -1,14 +1,15 @@
-import java.util.StringTokenizer;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
-
 public class Main {
 
+	static int a, b;
 	public static void main(String[] args) throws Exception{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		int a = Integer.parseInt(st.nextToken());
-		int b = Integer.parseInt(st.nextToken());
+		try {
+			a = System.in.read() - '0';
+			System.in.read();
+			b = System.in.read() - '0';
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		System.out.print(a+b);
 	}
 
