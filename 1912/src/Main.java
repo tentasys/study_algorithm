@@ -17,7 +17,7 @@ public class Main {
 		
 		for(int i=1; i<N; i++)
 		{
-			if(dp[i-1]+arr[i] < arr[i])		//합한 값이
+			if(dp[i-1] < 0)		//합한 값이
 				dp[i] = arr[i];
 			else
 				dp[i] = dp[i-1] + arr[i];
