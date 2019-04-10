@@ -52,6 +52,33 @@ for (int i = 0; i < 4; i++) {
 }
 ```
 
-compareTo 중요!!
+Comparable - 기본 정렬기준을 구현하는데 사용.
 
-꼭 써보자
+Comparator - 기본 정렬기준 외에 다른 기준으로 정렬하고자할 때 사용. 
+
+```java
+class Tree implements Comparable<Tree>{
+	int r;	int c;	int age;	boolean alive;
+	Tree(){};
+	Tree(int r, int c, int age)
+	{
+		this.r = r;	this.c = c;	this.age = age;		alive = true;
+	}
+	
+	@Override
+	public int compareTo(Tree o)
+	{
+		return this.age-o.age;
+	}
+}
+
+//나이순으로 정렬
+class Ascending implements Comparator<Tree>{
+
+	@Override
+	public int compare(Tree arg0, Tree arg1) {
+		return arg0.compareTo(arg1);
+	}
+}
+```
+
