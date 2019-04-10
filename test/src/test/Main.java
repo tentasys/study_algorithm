@@ -5,39 +5,35 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		System.out.println("Before : " + 1 + " " + 2);
+		int UP[][] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
 		
-		Point p = cal_next_point(1, 2, 0);
+		for(int i=0; i<3; i++)
+		{
+			for(int j=0; j<3; j++)
+				System.out.print(UP[i][j]+" ");
+			System.out.println();
+		}
 		
-		System.out.println("After : " + p.x + " " + p.y);
+		//윗면 모든 요소가 시계방향으로 회전
+		int temp = UP[0][0];
+		//좌 3줄
+		UP[0][0] = UP[1][0];	UP[1][0] = UP[2][0];	UP[2][0] = UP[2][1];
+		//하 2줄
+		UP[2][1] = UP[2][2];	UP[2][2] = UP[1][2];
+		//우 2줄
+		UP[1][2] = UP[0][2];	UP[0][2] = UP[0][1];
+		//상 1줄
+		UP[0][1] = temp;		
+		
+		System.out.println();
+		for(int i=0; i<3; i++)
+		{
+			for(int j=0; j<3; j++)
+				System.out.print(UP[i][j]+" ");
+			System.out.println();
+		}
 	}
 
-	static Point cal_next_point(int x, int y, int d)
-	{
-		Point result;
-		
-		if(d == 0)		//북쪽
-			result = new Point(x, y-1);
-		else if(d == 1)	//동쪽
-			result = new Point(x-1, y);
-		else if(d == 2)	//남쪽
-			result = new Point(x, y+1);
-		else//(d == 3)	서쪽
-			result = new Point(x-1, y);
-		
-		return result;
-	}
-	
-	
-}
 
-class Point{
-	int x;
-	int y;
-	Point(){};
-	Point(int x, int y)
-	{
-		this.x = x;
-		this.y = y;
-	}
+	
 }
