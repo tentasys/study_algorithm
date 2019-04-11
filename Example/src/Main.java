@@ -77,6 +77,25 @@ public class Main {
 		
 		System.out.println();
 	}
+	
+	//파일 입력
+	void file_input() throws Exception{
+		BufferedReader br = new BufferedReader(new FileReader("input.txt"));
+		String line = br.readLine();
+		StringTokenizer st = new StringTokenizer(line);
+		
+		while(line != null)
+		{		
+			st = new StringTokenizer(line);
+			while(st.hasMoreTokens())
+				System.out.print(Integer.parseInt(st.nextToken()) + " ");
+			
+			System.out.println();
+			line = br.readLine();
+		}
+		
+		br.close();
+	}
 }
 
 
@@ -93,4 +112,14 @@ class Descending implements Comparator<Integer>{
 	public int compare(Integer arg0, Integer arg1) {
 		return arg1.compareTo(arg0);
 	}
+}
+
+class Compare implements Comparable{
+
+	@Override
+	public int compareTo(Object arg0) {
+		//현재 클래스가 더 크면 양수, 같으면 0, 작으면 음수 반환
+		return 0;
+	}
+	
 }
