@@ -3,199 +3,143 @@ import java.io.*;
 
 public class Main {
 
-	static int N;
-	static int map[][];
+	static final int dr[] = {-1, 1, 0, 0};	//상하좌우
+	static final int dc[] = {0, 0, -1, 1};
+	static int N;		//지도 크기
+	static int map[][];	//지도
+	static int shark_r, shark_c;	//현재 상어 좌표
+	static int shark_size = 2;			//현재 상어 크기
+	static int shark_count = 0;			//상어가 먹이 먹은 수
 	
 	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
-		
 		N = Integer.parseInt(br.readLine());
 		
-		map = new int[N][N];			//정보를 담고 있는 지도
-		Baby_Shark shark = null;		//아~기~상어~뚜루뚜뚜뚜~
-		ArrayList<Fish> fish = new ArrayList<Fish>();
+		shark_r = 0;	shark_c = 0;	//아기상어의 위치
+		map = new int[N][N];
 		
-		//입력 받기
 		for(int i=0; i<N; i++)
 		{
-			st = new StringTokenizer(br.readLine());
+			StringTokenizer st = new StringTokenizer(br.readLine());
 			for(int j=0; j<N; j++)
 			{
 				map[i][j] = Integer.parseInt(st.nextToken());
-				if(map[i][j] == 9)						//아기상어 만나면
+				if(map[i][j] == 9)	//상어인 경우 좌표 저장
 				{
-					shark = new Baby_Shark(i, j, 2, 0);//상어 만들기
-					map[i][j] = 0;						//다시 돌아와야하므로 0으로 만들기
+					shark_r = i;	shark_c = j;
+					map[i][j] = 0;
 				}
-				else if(map[i][j] != 0)		fish.add(new Fish(i, j, map[i][j]));	//물고기 리스트에 추가
 			}
 		}
-		//----입력 끝
 		
-		int time = 0;		//얼마만에 도움을 청하는가
-		
-		//찾으면서 먹게 할 수 있음!
-		for(int i=0; i<fish.size(); i++)		//총 먹을 물고기 수만큼 뺑이
+		//입력 끝
+		int count = 0;
+		while(true)	//다 돌면 -1 반환. 그때까지 count 늘려간다
 		{
-			int min_distance = 401;			//최대 크기는 20x20이므로 400을 넘을 수 없다
-			Fish min_fish = fish.get(0);	//최소거리를 가진 고기 정보
-			
-			for(int j=0; j<fish.size(); j++)
-			{
-				if(fish.get(j).isAlive() == false || fish.get(j).size >= shark.size)	//죽었거나 큰고기는 건너뜀
-					continue;
-				
-				int temp;
-				
-				temp = distance(fish.get(j), shark);	//고기와의 거리 구하기
-				if(temp == -1)	continue;	//갈 수 없는 경우
-				else
-				{
-					//가장 가까운거 정하기
-					if(temp < min_distance)	//거리가 작으면
-					{
-						min_distance = temp;
-						min_fish = fish.get(j);
-					}
-					else if(temp == min_distance)	//거리가 같은 경우
-					{
-						if(fish.get(j).x < min_fish.x)		//위쪽에 있으면
-						{
-							min_distance = temp;
-							min_fish = fish.get(j);
-						}
-						else if(fish.get(j).x == min_fish.x)	//높이가 같은 경우
-						{
-							if(fish.get(j).y < min_fish.y)		//왼쪽에 있으면
-							{
-								min_distance = temp;
-								min_fish = fish.get(j);
-							}
-						}
-					}
-				}//가까운거 정하기 끝
-			}
-			
-			//먹을 고기 정하기
-			if(min_distance < 401)
-			{
-				time += min_distance;			//시간에 거리 더하기
-				min_fish.alive = false;
-				shark.level_up(1);
-				shark.x = min_fish.x;
-				shark.y = min_fish.y;
-				map[min_fish.x][min_fish.y] = 0;
-			}
+			int temp = solution();
+			if(temp == -1)
+				break;
+			else
+				count += temp;
 		}
 		
-		System.out.print(time);
+		System.out.print(count);
 	}
-	
-	//최소거리 찾기
-	static public int distance(Fish fish, Baby_Shark shark)
-	{	
+
+	static int solution()
+	{
+		int result = -1;
 		Queue<Fish> q = new LinkedList<Fish>();
-		q.offer(new Fish(shark.x, shark.y, 0));		//상어 이동하자
+		boolean visit[][] = new boolean[N][N];		//BFS 방문 체크하기 위한 배열
+		int dist[][] = new int[N][N];				//해당 좌표까지의 거리
 		
-		int dist[][] = new int[N][N];
-		boolean visit[][] = new boolean[N][N];
-		int min = Integer.MAX_VALUE;
+		q.offer(new Fish(shark_r, shark_c, shark_size));	//현재 상어의 위치 제공
+		visit[shark_r][shark_c] = true;			//현재 위치에 방문 체크
 		
-		//BFS에서 큐에 넣을 때 visit을 해 줘야지 중복방문을 하지 않는다
+		//BFS로 완전탐색
+		Fish min_fish = new Fish(999, 999, 999);
+		int min_dist = Integer.MAX_VALUE;	//이동 횟수의 최소값
+		
 		while(!q.isEmpty())
 		{
-			Fish temp = q.poll();
+			Fish cur = q.poll();		//큐의 원소 꺼내기
 			
-			//상
-			if(temp.x > 0)
+			int nR, nC;					//다음 좌표
+			
+			for(int i=0; i<4; i++)
 			{
-				if(map[temp.x-1][temp.y] <= shark.size && visit[temp.x-1][temp.y] == false)
+				nR = cur.r + dr[i];		nC = cur.c + dc[i];		//상어가 다음에 갈 좌표
+				
+				if(nR < 0 || nR >= N || nC < 0 || nC >= N)		//좌표 범위를 벗어날 경우
+					continue;
+				if(visit[nR][nC] == true)			//이미 방문했을 경우
+					continue;
+				if(map[nR][nC] > cur.size)		//갈 위치에 나보다 큰 물고기가 존재한다면 가지 않음
+					continue;
+				
+				//잡아먹든 안잡아먹든 이동은 해야함
+				dist[nR][nC] = dist[cur.r][cur.c] + 1;
+				visit[nR][nC] = true;
+				
+				if(map[nR][nC] < cur.size && map[nR][nC] != 0)		//잡아먹을 수 있다면
 				{
-					visit[temp.x-1][temp.y] = true;
-					q.offer(new Fish(temp.x-1, temp.y, 0));
-					dist[temp.x-1][temp.y] =  dist[temp.x][temp.y] + 1;
-					
-					if(temp.x-1 == fish.x && temp.y == fish.y)	min = Math.min(min, dist[temp.x-1][temp.y]);
+					if(dist[nR][nC] < min_dist)		//이동값이 최소값보다 작으면
+					{
+						min_dist = dist[nR][nC];			//최소 거리값 업데이트
+						min_fish = new Fish(nR, nC, map[nR][nC]);	//잡아먹을 물고기 정보 업데이트
+						continue;
+					}
+					else if(dist[nR][nC] == min_dist)	//이동값이 최소값이랑 같으면 물고기 좌표 비교
+					{
+						Fish temp = new Fish(nR, nC, map[nR][nC]);	//물고기 정보 비교하기 위해 불러옴
+						if(temp.compareTo(min_fish) < 0)		//기존의 물고기보다 조건에 가까우면
+						{
+							min_dist = dist[nR][nC];
+							min_fish = temp;
+							continue;
+						}
+					}	
 				}
-			}
-			//하
-			if(temp.x < N-1)
-			{
-				if(map[temp.x+1][temp.y] <= shark.size && visit[temp.x+1][temp.y] == false)
-				{
-					visit[temp.x+1][temp.y] = true;
-					q.offer(new Fish(temp.x+1, temp.y, 0));
-					dist[temp.x+1][temp.y] =  dist[temp.x][temp.y] + 1;
-					
-					if(temp.x+1 == fish.x && temp.y == fish.y)	min = Math.min(min, dist[temp.x+1][temp.y]);
-				}
-			}
-			//좌
-			if(temp.y > 0)
-			{
-				if(map[temp.x][temp.y-1] <= shark.size && visit[temp.x][temp.y-1] == false)
-				{
-					visit[temp.x][temp.y-1] = true;
-					q.offer(new Fish(temp.x, temp.y-1, 0));
-					dist[temp.x][temp.y-1] =  dist[temp.x][temp.y] + 1;
-					
-					if(temp.x == fish.x && temp.y-1 == fish.y)	min = Math.min(min, dist[temp.x][temp.y-1]);
-				}
-			}
-			//우
-			if(temp.y < N-1)
-			{
-				if(map[temp.x][temp.y+1] <= shark.size && visit[temp.x][temp.y+1] == false)
-				{
-					visit[temp.x][temp.y+1] = true;
-					q.offer(new Fish(temp.x, temp.y+1, 0));
-					dist[temp.x][temp.y+1] =  dist[temp.x][temp.y] + 1;
-					
-					if(temp.x == fish.x && temp.y+1 == fish.y)	min = Math.min(min, dist[temp.x][temp.y+1]);
-				}
+				
+				//잡아먹을 수 없다면 다른 물고기 탐색		
+				q.offer(new Fish(nR, nC, shark_size));		
 			}
 		}
 		
-		if(dist[fish.x][fish.y] == 0)	return -1;
-		else							return min;
+		if(min_dist < 400)		//물고기를 먹은 경우
+		{
+			result = dist[min_fish.r][min_fish.c];	//먹은곳까지 도달하는 거리
+			map[min_fish.r][min_fish.c] = 0;		//먹은곳 0으로 만들기
+			shark_r = min_fish.r;	//상어의 새 좌표
+			shark_c = min_fish.c;
+			shark_count++;		//먹이 먹은 수 증가
+			
+			if(shark_count%shark_size == 0)		//상어 크기 증가
+			{
+				shark_count = 0;
+				shark_size++;
+			}
+		}
+		
+		return result;
 	}
 }
 
-//잡아먹을 물고기들
-class Fish{
-	int x;	int y;	int size;	boolean alive;
+class Fish implements Comparable<Fish>{
+	int r, c;
+	int size;
 	Fish(){};
-	Fish(int x, int y, int size)
+	Fish(int r, int c, int size)
 	{
-		this.x = x;		this.y = y;		this.size = size;	this.alive = true;
-	}
-	public boolean isAlive()
-	{
-		if(this.alive == true)	return true;
-		else	return false;
-	}
-}
-
-//아기 상어
-class Baby_Shark{
-	int x;	int y;	int size;	int count;
-	Baby_Shark(){};
-	Baby_Shark(int x, int y, int size, int count)
-	{
-		this.x = x;		this.y = y;		this.size = size;	this.count = count;
+		this.r = r; this.c = c;	this.size = size;
 	}
 	
-	//몇 번 먹으면 레벨업하나
-	public void level_up(int n) {
-		int sum = n + this.count;
-		
-		if(sum/this.size > 0)
-		{
-			this.size++;
-			this.count = 0;
-		}
+	@Override		
+	public int compareTo(Fish f){
+		if(this.r == f.r)
+			return this.c-f.c;
 		else
-			this.count += n;
+			return this.r-f.r;
 	}
+
 }
