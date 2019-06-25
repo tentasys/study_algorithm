@@ -18,7 +18,7 @@ public class Solution {
 			
 			while(true)
 			{
-				if(((result-S)%24 == 0) && ((result-M)%29 == 0))
+				if(((result-S)%365 == 0) && ((result-M)%29 == 0))
 					break;
 				
 				result += 24;
