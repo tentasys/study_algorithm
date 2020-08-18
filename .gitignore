@@ -1,4 +1,7 @@
 /.metadata/
 /.recommenders/
 test/
-*/.classpath/*
+.project
+.metadata
+.classpath
+.settings/
