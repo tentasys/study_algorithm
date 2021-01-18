@@ -12,10 +12,10 @@ public class Main {
 		
 		int X = V-A;
 		int Y = A-B;
-		int Z = X/Y;
-		if(Z == 0)	Z = 1;
 		
-		System.out.println(Z+1);
+		if(X%Y == 0)
+			System.out.println(X/Y+1);
+		else
+			System.out.println(X/Y+2);
 	}
-
 }
