@@ -7,19 +7,25 @@ public class Main {
 		int N = Integer.parseInt(br.readLine());
 		
 		int sum = 0;
+		int min = -1;
 		
 		for(int i=M; i<=N; i++) {
 			if(isPrime(i) == true) {
 				sum += i;
+				if(min == -1)	min = i;
 				//System.out.println(i);
 			}
 				
 		}
 		
-		if(sum == 0)
+		if(sum == 0) {
 			System.out.println(-1);
-		else
+		}		
+		else {
 			System.out.println(sum);
+			System.out.println(min);
+		}
+			
 	}
 
 	public static boolean isPrime(int num) {
