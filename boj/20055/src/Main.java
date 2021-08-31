@@ -24,8 +24,6 @@ public class Main {
 		
 		while(true)
 		{
-			if(step == 472)
-				System.out.println();
 			//list 연산 시 한 list에서 연산하면 꼬일 것 같다 
 			ArrayList<Integer> new_list = new ArrayList<Integer>();
 			
@@ -48,12 +46,13 @@ public class Main {
 			////////////////////2번 동작 : 로봇 이동하기 
 			temp = 0;
 			new_list = new ArrayList<Integer>();
+			boolean vacant[] = new boolean[2*N];
 			for(int a : list)
 			{
 				temp = a;
 				int next_idx = (a+1)%(2*N);
 				//이동하려는 칸에 로봇이 없는지 
-				if(list.contains(next_idx) == false)
+				if(list.contains(next_idx) == false || vacant[next_idx] == true)
 				{
 					//내구도가 1 이상인지 
 					if(belt[next_idx] >= 1)
@@ -61,6 +60,7 @@ public class Main {
 						temp = next_idx;	//로봇 이동
 						belt[next_idx]--;	//내구도 감소 
 						if(belt[next_idx] == 0)		count++;
+						vacant[a] = true;
 					}
 				}
 				
