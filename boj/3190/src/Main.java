@@ -32,7 +32,7 @@ public class Main {
 		//뱀 생성 
 		Deque<Node> snake = new LinkedList<Node>();
 		snake.addFirst(new Node(1, 1, 3));
-		int time = 1;
+		int time = 0;
 		
 		//게임 시작 
 		while(time <= 10000)
@@ -63,6 +63,16 @@ public class Main {
 				
 				//머리일 경우 다음 머리 위치 설정 & 사과 먹기 
 				if(isHead == true) {
+					
+					//가는 위치가 꼬리이면 안됨 
+					if(!snake.isEmpty()) {
+						Node temp = snake.getLast();
+						if(temp.r == nr && temp.c == nc) {
+							gameover = true;
+							break;
+						}
+					}
+					
 					//방향 설정 
 					int temp_dir = cur.dir;
 					nextdir = cur.dir;
@@ -74,7 +84,7 @@ public class Main {
 					
 					//사과가 있다면 먹는다 
 					if(apples[nr][nc] == true) {
-						apples[nr][nr] = false;
+						apples[nr][nc] = false;
 						ateApple = true;
 					}
 					
@@ -106,6 +116,10 @@ public class Main {
 			}
 			
 			snake = temp_snake;
+			
+			//디버깅 
+			snake = printSnake(N, time, snake, apples);
+			
 			time++;
 		}
 		
@@ -137,6 +151,31 @@ public class Main {
 		}
 		
 		return result;
+	}
+	
+	static Deque<Node> printSnake(int N, int time, Deque<Node> snake, boolean[][] apples) {
+		
+		Deque<Node> temp = new LinkedList<Node>();
+		
+		System.out.println("----------time : "+time+"-------------");
+		boolean[][] map = new boolean[N+1][N+1];
+		while(!snake.isEmpty()) {
+			Node cur = snake.poll();
+			temp.add(cur);
+			map[cur.r][cur.c] = true;
+		}
+		
+		for(int i=1; i<=N; i++) {
+			for(int j=1; j<=N; j++) {
+				if(map[i][j] == true)	System.out.print("■");
+				else if(apples[i][j] == true)	System.out.print("●");
+				else System.out.print("□");
+			}
+			System.out.println();
+		}
+		System.out.println("-------------------------------");
+		
+		return temp;
 	}
 
 }
